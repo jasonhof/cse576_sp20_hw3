@@ -1,10 +1,10 @@
 2.2.1 Question
 Q: Why might we be interested in both training accuracy and testing accuracy? What do these two numbers tell us about our current model?
-A:
+A: The training and testing accuracy, and the rate they are changing on each pass relative to each other, can tell us about the way our model is currently fitting the data and can give us hints about its future performance.  For example, if we get a 
 
 2.2.2 Question
 Q: Try varying the model parameter for learning rate to different powers of 10 (i.e. 10^1, 10^0, 10^-1, 10^-2, 10^-3) and training the model. What patterns do you see and how does the choice of learning rate affect both the loss during training and the final model accuracy?
-A:
+A: When varying the learning rate, there seems to be a "sweet spot" somewhere in the middle of that range that allows for the best balance of model convergence time and accuracy.  At the highest learning rate I tested (10^1), the model performs with poor accuracy at the end (<10% training and test accuracy), and the loss quickly becomes nan after 4 iterations.  As we decrease the learning rate (to 10^0), we get a much better accuracy at the end (~89.9% training and test accuracy).  We get slightly better accuracy with slower learning rates (91.7% with 10^-1 and 90.2% with 10^-2), but the time required to converge differs: the first iteration to reach over 90% Batch Accuracy is Iteration 22 for 10^-1 vs Iteration 95 for 10^-2.  This pattern is inversely correlated with the Training Loss, as well.  The higher learning rate in 10^-1 results in a faster decline in Training Loss (from 2.3 in Iteration 0 to .37 in Iteration 22).  In 10^-2, the Training Loss declines more slowly (from 2.3 in Iteration 0 to 1.2 in Iteration 22).  This contrasts with the Training Loss from 10^1, which increases from 2.3 in Iteration 0 to 62.5 in Iteration 3, followed by 'nan', indicating that the Training Loss has continued increasing beyond the capacity of the data type to store it.
 
 2.2.3 Question
 Q: Try varying the parameter for weight decay to different powers of 10: (10^0, 10^-1, 10^-2, 10^-3, 10^-4, 10^-5). How does weight decay affect the final model training and test accuracy?

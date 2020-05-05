@@ -61,10 +61,12 @@ int main(int argc, char **argv) {
 
   double batch = 128;
   double iters = 1000;
-  double rate = .01;
+  double rate = .001;
   double momentum = .9;
   double decay = .0;
   
+  printf("Parameters: Rate=%lf\n",rate);
+
   Model model = softmax_model(d.train.X.cols, d.train.y.cols);
   //Model model = neural_net(d.train.X.cols,d.train.y.cols);
   

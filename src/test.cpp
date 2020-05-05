@@ -68,6 +68,8 @@ void test_forward_softmax() {
   Matrix a = load_binary("solutions/a.bin");
   Matrix gt = load_binary("solutions/forward_softmax.bin");
   Matrix output = forward_softmax(a);
+  cout<<a(20,20)<<endl;
+  cout<<gt(20,20)<<endl;
   TEST(matrix_within_eps(gt, output, EPS));
 }
 

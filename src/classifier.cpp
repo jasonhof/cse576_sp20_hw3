@@ -31,7 +31,17 @@ void debug_print(const char *name, const Matrix &m, int max_rows = 2, int max_co
 Matrix forward_weights(const Layer &l, const Matrix &in) {
   Matrix output;
   // TODO: Multiply input by weights and return the result
-  NOT_IMPLEMENTED();
+  output = in * l.w;
+  /*
+  for (int samp=0;samp<in.rows;samp++)
+  {
+    for (int act=0;act<in.cols;act++)
+    {
+      output(samp,act) = in(samp,act) * l.w(act);
+    }
+  }
+  */
+  // NOT_IMPLEMENTED();
 
   assert(output.rows == in.rows);
   assert(output.cols == l.w.cols);
@@ -45,7 +55,8 @@ Matrix forward_activation(const Layer &l, const Matrix &out1) {
   Matrix output;
   // TODO: Apply activation function and return
   // Hint: Use forward_activate_matrix in activations.cpp.
-  NOT_IMPLEMENTED();
+  output = forward_activate_matrix(out1,l.activation);
+  // NOT_IMPLEMENTED();
 
   return output;
 }
@@ -80,7 +91,9 @@ Matrix backward_xw(const Layer &l, const Matrix &grad_y) {
   //           = dL/dy * df(xw)/d(xw)
   //           = dL/dy * f'(xw)
   // Hint: Use backward_activate_matrix in activations.cpp.
-  NOT_IMPLEMENTED();
+  //grad_xw = backward_activate_matrix();
+  grad_xw = backward_activate_matrix(l.out2,grad_y,l.activation); // might not be l.out2
+  //NOT_IMPLEMENTED();
 
   return grad_xw;
 }
@@ -93,7 +106,8 @@ Matrix backward_w(const Layer &l) {
   // Hint:
   //  dL/dw = d(xw)/dw * dL/d(xw) = x * dL/d(xw)
   Matrix grad_w;
-  NOT_IMPLEMENTED();
+  grad_w=l.in.transpose() * l.grad_out1;
+  //NOT_IMPLEMENTED();
 
   assert_same_size(grad_w, l.w);
   return grad_w;
@@ -105,7 +119,8 @@ Matrix backward_x(const Layer &l) {
   // Get the relevant quantities from the layer (see forward() and backward() function for reference)
   // TODO (1.4.3): finally, calculate dL/dx and return it
   Matrix grad_x;
-  NOT_IMPLEMENTED();
+  grad_x = l.grad_out1*l.w.transpose();
+  //NOT_IMPLEMENTED();
 
   assert_same_size(grad_x, l.in);
   return grad_x;
@@ -129,11 +144,13 @@ Matrix Layer::backward(const Matrix &grad_y) {
 void update_layer(Layer &l, double rate, double momentum, double decay) {
   // TODO: calculate the weight updates
   // Hint: Calculate Δw_t = dL/dw_t - λw_t + mΔw_{t-1} and save it to l.v
-  NOT_IMPLEMENTED();
+  l.v = l.grad_w - l.w*decay + l.v*momentum; //probably need to do a for loop around this?
+  //NOT_IMPLEMENTED();
 
   // TODO: update the weights and save to l.w.
   // Hint: w_{t+1} = w_t + ηΔw_t
-  NOT_IMPLEMENTED();
+  l.w = l.w + l.v*rate; // for loop also?
+  //NOT_IMPLEMENTED();
 }
 
 // DO NOT MODIFY.
