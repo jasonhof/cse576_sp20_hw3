@@ -255,10 +255,16 @@ double cross_entropy_loss(const Matrix &y, const Matrix &p) {
 double l2_loss(const Matrix &y, const Matrix &p) {
   assert_same_size(y, p);
   // TODO
+  double sum = 0;
+  for (int i = 0; i < y.rows; i++) {
+    for (int j = 0; j < y.cols; j++) {
+      sum += pow(y(i, j) - p(i,j),2.0);
+    }
+  }
+  //NOT_IMPLEMENTED();
 
-  NOT_IMPLEMENTED();
-
-  return 0;
+  return sum / y.rows;
+  //return sum;
 }
 
 // Calculate the L1 loss for a set of predictions
@@ -268,10 +274,22 @@ double l2_loss(const Matrix &y, const Matrix &p) {
 double l1_loss(const Matrix &y, const Matrix &p) {
   assert_same_size(y, p);
   // TODO
+  double sum = 0;
+  double diff = 0;
+  for (int i = 0; i < y.rows; i++) {
+    for (int j = 0; j < y.cols; j++) {
+      diff = y(i, j) - p(i,j);
+      if (abs(diff) <= 1)
+      {
+        diff = pow(y(i, j) - p(i,j),2.0);
+      }
+      sum += diff;
+    }
+  }
+  //NOT_IMPLEMENTED();
 
-  NOT_IMPLEMENTED();
-
-  return 0;
+  return sum / y.rows;
+  //return sum;
 }
 
 // Calculate the loss for a set of predictions

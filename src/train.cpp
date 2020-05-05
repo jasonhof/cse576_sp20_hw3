@@ -46,9 +46,22 @@ Model softmax_model(int inputs, int outputs) {
 
 Model neural_net(int inputs, int outputs) {
   return {{
-              Layer(inputs, 32, LOGISTIC),
+              //Layer(inputs, 32, LOGISTIC),
+              //Layer(inputs, 32, LINEAR),
+              //Layer(inputs, 32, TANH),
+              //Layer(inputs, 32, RELU),
+              //Layer(inputs, 32, LRELU),
+              //Layer(inputs, 32, SOFTMAX),
+              //Layer(inputs, 64, TANH),
+              Layer(inputs, 128, LRELU),
+              Layer(128, 64, TANH),
+              Layer(64, 32, TANH),
               Layer(32, outputs, SOFTMAX)
-          },  CROSS_ENTROPY};
+          },  
+          CROSS_ENTROPY
+          //L2_LOSS
+          //L1_LOSS
+          };
 }
 
 int main(int argc, char **argv) {
@@ -56,19 +69,19 @@ int main(int argc, char **argv) {
   set_verbose(true);
 
   printf("Loading dataset\n");
-  Dataset d = get_mnist();
-  //Dataset d = get_cifar10();
+  //Dataset d = get_mnist();
+  Dataset d = get_cifar10();
 
   double batch = 128;
   double iters = 1000;
-  double rate = .001;
+  double rate = .04;
   double momentum = .9;
-  double decay = .0;
+  double decay = .00001;
   
-  printf("Parameters: Rate=%lf\n",rate);
+  
 
-  Model model = softmax_model(d.train.X.cols, d.train.y.cols);
-  //Model model = neural_net(d.train.X.cols,d.train.y.cols);
+  //Model model = softmax_model(d.train.X.cols, d.train.y.cols);
+  Model model = neural_net(d.train.X.cols,d.train.y.cols);
   
   printf("Training model...\n");
   
@@ -77,6 +90,6 @@ int main(int argc, char **argv) {
   printf("evaluating model...\n");
   printf("training accuracy: %lf\n", model.accuracy(d.train));
   printf("test accuracy:     %lf\n", model.accuracy(d.test));
-
+  printf("Parameters: Rate=%lf, Decay=%lf, Iters=%lf\n",rate,decay,iters);
   return 0;
 }
